@@ -5,117 +5,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PujaMap | Chittaranjan Durga Puja 2026</title>
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 :root {
-  --red: #861b32;
-  --dark: #45101d;
-  --gold: #f3c969;
-  --cream: #fff8ed;
-  --ink: #291720;
+  --red:#861b32;
+  --dark:#45101d;
+  --gold:#f3c969;
+  --cream:#fff8ed;
+  --ink:#291720;
 }
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  font-family: system-ui, Arial, sans-serif;
-  background: var(--cream);
-  color: var(--ink);
+  margin:0;
+  font-family:system-ui,Arial,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
 }
 header {
-  padding: 21px 16px;
-  color: white;
-  background: linear-gradient(125deg, var(--dark), #a32440);
-  border-bottom: 4px solid var(--gold);
+  padding:21px 16px;
+  color:white;
+  background:linear-gradient(125deg,var(--dark),#a32440);
+  border-bottom:4px solid var(--gold);
 }
-header h1 { margin: 0; font-size: 28px; }
-header p { margin: 5px 0 0; color: #ffe5aa; }
-main { max-width: 1250px; margin: auto; padding: 13px; }
+header h1 { margin:0; font-size:28px; }
+header p { margin:5px 0 0; color:#ffe5aa; }
+main { max-width:1250px; margin:auto; padding:13px; }
 .panel {
-  background: white;
-  border: 1px solid #ead9cb;
-  border-radius: 16px;
-  padding: 14px;
-  margin-bottom: 13px;
-  box-shadow: 0 4px 16px #42101a0b;
+  background:white;
+  border:1px solid #ead9cb;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:13px;
+  box-shadow:0 4px 16px #42101a0b;
 }
-h2 { font-size: 20px; margin: 4px 0 12px; }
-.small { color: #6c5b60; font-size: 13px; line-height: 1.5; }
-.controls { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+h2 { font-size:20px; margin:4px 0 12px; }
+.small { color:#6c5b60; font-size:13px; line-height:1.5; }
+.controls { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
 input[type="text"] {
-  flex: 1;
-  min-width: 150px;
-  padding: 11px;
-  border: 1px solid #d5c6c0;
-  border-radius: 10px;
-  font: inherit;
+  flex:1;
+  min-width:150px;
+  padding:11px;
+  border:1px solid #d5c6c0;
+  border-radius:10px;
+  font:inherit;
 }
 button {
-  padding: 10px 12px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--red);
-  color: white;
-  font: inherit;
-  font-weight: 650;
-  cursor: pointer;
+  padding:10px 12px;
+  border:0;
+  border-radius:10px;
+  background:var(--red);
+  color:white;
+  font:inherit;
+  font-weight:650;
+  cursor:pointer;
 }
 button.secondary {
-  background: white;
-  color: var(--red);
-  border: 1px solid var(--red);
+  background:white;
+  color:var(--red);
+  border:1px solid var(--red);
 }
-button:disabled { opacity: .5; }
-.status { color: var(--red); min-height: 24px; padding: 5px 0; }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.status { color:var(--red); min-height:24px; padding:5px 0; }
 #map {
-  width: 100%;
-  height: 55vh;
-  min-height: 350px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  z-index: 1;
+  width:100%;
+  height:55vh;
+  min-height:350px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  z-index:1;
 }
-.stats {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 10px 0;
-}
+.stats { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0; }
 .stat {
-  background: #fff2d6;
-  border-radius: 10px;
-  padding: 10px 13px;
-  font-weight: 700;
+  background:#fff2d6;
+  border-radius:10px;
+  padding:10px 13px;
+  font-weight:700;
 }
 .pandal {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #eee;
 }
-.pandal-info { flex: 1; min-width: 0; }
-.pandal-name { font-weight: 700; }
-.pandal-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.pandal-actions button { padding: 8px 10px; font-size: 13px; }
-.visited-check { width: 20px; height: 20px; accent-color: var(--red); flex-shrink: 0; }
-.visited-label { font-size: 13px; color: #6c5b60; }
+.pandal-info { flex:1; min-width:0; }
+.pandal-name { font-weight:700; }
+.distance { color:#861b32; font-size:13px; font-weight:750; margin-top:3px; }
+.visited-label { font-size:13px; color:#6c5b60; margin-top:3px; }
+.pandal-actions { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.pandal-actions button { padding:8px 10px; font-size:13px; }
+.visited-check { width:20px; height:20px; accent-color:var(--red); flex-shrink:0; }
 .leaflet-tooltip.pandal-label {
-  background: #fff8ed;
-  color: #861b32;
-  border: 1px solid #861b32;
-  border-radius: 7px;
-  font-weight: 750;
-  padding: 4px 7px;
-  box-shadow: 0 2px 7px #0002;
+  background:#fff8ed;
+  color:#861b32;
+  border:1px solid #861b32;
+  border-radius:7px;
+  font-weight:750;
+  padding:4px 7px;
+  box-shadow:0 2px 7px #0002;
 }
-.leaflet-tooltip.pandal-label:before { display: none; }
-.popup-title { font-weight: 750; margin-bottom: 8px; }
-.popup-visited { margin: 8px 0; }
-@media (min-width: 850px) {
-  .layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 13px; }
-  #map { height: 590px; }
+.leaflet-tooltip.pandal-label:before { display:none; }
+.popup-title { font-weight:750; margin-bottom:7px; }
+.popup-distance { color:#861b32; font-weight:700; margin:5px 0 9px; }
+.popup-visited { display:block; margin:8px 0; }
+@media(min-width:850px) {
+  .layout { display:grid; grid-template-columns:1.3fr 1fr; gap:13px; }
+  #map { height:590px; }
 }
 </style>
 </head>
@@ -128,80 +124,88 @@ button:disabled { opacity: .5; }
 
 <main>
   <section class="panel">
-    <h2>📍 Live Location & Pandal Route</h2>
+    <h2>📍 Live Location & Nearby Pandals</h2>
     <p class="small">
-      Start live location, select any pandal for its route, or plan a tour of all pandals.
+      Start live location to calculate your distance from each pandal.
+      Nearby results are sorted by straight-line distance.
     </p>
 
     <div class="controls">
       <button id="start">▶ Start Live Location</button>
       <button id="stop" class="secondary" disabled>■ Stop</button>
+      <button id="showMe" class="secondary">◎ My Location</button>
     </div>
 
     <div class="controls">
       <input id="search" type="text" placeholder="Search pandal name...">
+      <button id="nearby">📍 Nearby Pandals</button>
+      <button id="all">Show All</button>
+    </div>
+
+    <div class="controls">
       <button id="tour">🗺️ All Pandals Route</button>
       <button id="clear" class="secondary">Clear Route</button>
     </div>
 
     <div class="stats">
       <div class="stat">✅ Visited: <span id="visitedCount">0/11</span></div>
-      <div class="stat">📍 Total Pandals: 11</div>
+      <div class="stat">📍 Pandals: 11</div>
     </div>
 
     <div id="status" class="status" role="status">
-      Tap Start Live Location and allow location permission.
+      Start Live Location and allow location permission to see distances.
     </div>
 
     <div id="map"></div>
     <p class="small">
-      Keep this page open while using live location. GPS accuracy depends on your device,
-      signal and surroundings. Your live location is not automatically shared with friends.
+      Distances are straight-line estimates from GPS, not road distances.
+      Keep this page open for live updates. Your location is not automatically shared with others.
     </p>
   </section>
 
   <div class="layout">
     <section class="panel">
-      <h2>📍 All Pandals</h2>
-      <p class="small">Mark each pandal as visited. Your choices are saved in this browser.</p>
+      <h2 id="listHeading">📍 All Pandals</h2>
+      <p class="small" id="listDescription">
+        Select a pandal to see its location, distance and route.
+      </p>
       <div id="list"></div>
     </section>
 
     <section class="panel">
       <h2>🧭 Route Information</h2>
-      <p id="routeInfo">Start live location and select a pandal to see its route.</p>
+      <p id="routeInfo">Start live location and select a pandal to see its road route.</p>
       <p class="small">
-        Road routes are provided by a public routing service. The service can sometimes
-        be busy or unavailable. Route distance and time are estimates.
+        Road routes use a public routing service and may occasionally be unavailable.
+        Travel times are estimates.
       </p>
     </section>
   </div>
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
 const pandals = [
-  { name: "Area 6", lat: 23.8461063, lon: 86.9111291 },
-  { name: "Area 5", lat: 23.8419200, lon: 86.8966939 },
-  { name: "Hospital Colony", lat: 23.8504133, lon: 86.8966588 },
-  { name: "Area 4 — Ravindra Manch", lat: 23.8460140, lon: 86.9044070 },
-  { name: "Area 2 — Ribbon Area", lat: 23.8709240, lon: 86.9026420 },
-  { name: "Area 7 — Simjhuri", lat: 23.8763010, lon: 86.9102490 },
-  { name: "Area 1 — Fathepur", lat: 23.8651730, lon: 86.9162690 },
-  { name: "DeshBandhu Park", lat: 23.8307400, lon: 86.8984240 },
-  { name: "Area 8", lat: 23.8501480, lon: 86.8888930 },
-  { name: "R. Side", lat: 23.8636450, lon: 86.8980570 },
-  { name: "S.P. North", lat: 23.8720550, lon: 86.8979010 }
+  {name:"Area 6",lat:23.8461063,lon:86.9111291},
+  {name:"Area 5",lat:23.8419200,lon:86.8966939},
+  {name:"Hospital Colony",lat:23.8504133,lon:86.8966588},
+  {name:"Area 4 — Ravindra Manch",lat:23.8460140,lon:86.9044070},
+  {name:"Area 2 — Ribbon Area",lat:23.8709240,lon:86.9026420},
+  {name:"Area 7 — Simjhuri",lat:23.8763010,lon:86.9102490},
+  {name:"Area 1 — Fathepur",lat:23.8651730,lon:86.9162690},
+  {name:"DeshBandhu Park",lat:23.8307400,lon:86.8984240},
+  {name:"Area 8",lat:23.8501480,lon:86.8888930},
+  {name:"R. Side",lat:23.8636450,lon:86.8980570},
+  {name:"S.P. North",lat:23.8720550,lon:86.8979010}
 ];
 
 const STORAGE_KEY = "pujamap_chittaranjan_2026_visited";
 
 function loadVisited() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    return new Set(Array.isArray(saved) ? saved : []);
-  } catch (e) {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return new Set(Array.isArray(data) ? data : []);
+  } catch(e) {
     return new Set();
   }
 }
@@ -213,30 +217,50 @@ let myMarker = null;
 let accuracyCircle = null;
 let routeLayer = null;
 let routeRequestId = 0;
+let nearbyMode = false;
 
 const statusEl = document.getElementById("status");
 const routeInfo = document.getElementById("routeInfo");
 const startBtn = document.getElementById("start");
 const stopBtn = document.getElementById("stop");
+const listEl = document.getElementById("list");
 
 function showStatus(message) {
   statusEl.textContent = message;
 }
 
-const map = L.map("map").setView([23.8565, 86.9020], 13);
+const map = L.map("map").setView([23.8565,86.9020],13);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "© OpenStreetMap contributors"
+  maxZoom:19,
+  attribution:"© OpenStreetMap contributors"
 }).addTo(map);
 
 const markers = [];
 
+function distanceKm(a,b) {
+  const rad = n => n * Math.PI / 180;
+  const lat1 = rad(a.lat);
+  const lat2 = rad(b.lat);
+  const dLat = rad(b.lat-a.lat);
+  const dLon = rad(b.lon-a.lon);
+  const h = Math.sin(dLat/2)**2 +
+    Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+}
+
+function distanceText(p) {
+  if (!myCoords) return "Distance: start live location first";
+  const km = distanceKm(myCoords,p);
+  if (km < 1) return "📍 " + Math.round(km*1000) + " m away";
+  return "📍 " + km.toFixed(2) + " km away";
+}
+
 function saveVisited() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...visited]));
-  } catch (e) {
-    showStatus("Browser storage unavailable. Visited marks may not persist.");
+    localStorage.setItem(STORAGE_KEY,JSON.stringify([...visited]));
+  } catch(e) {
+    showStatus("Browser storage unavailable; visited marks may not save.");
   }
 }
 
@@ -245,13 +269,9 @@ function updateCounter() {
     visited.size + "/" + pandals.length;
 }
 
-function toggleVisited(index, checked) {
-  if (checked) {
-    visited.add(index);
-  } else {
-    visited.delete(index);
-  }
-
+function toggleVisited(index,checked) {
+  if (checked) visited.add(index);
+  else visited.delete(index);
   saveVisited();
   updateCounter();
   renderList();
@@ -259,8 +279,7 @@ function toggleVisited(index, checked) {
 }
 
 function updatePopups() {
-  pandals.forEach((p, i) => {
-    const marker = markers[i];
+  pandals.forEach((p,i) => {
     const box = document.createElement("div");
 
     const title = document.createElement("div");
@@ -268,52 +287,72 @@ function updatePopups() {
     title.textContent = p.name;
     box.appendChild(title);
 
-    const checkLabel = document.createElement("label");
-    checkLabel.className = "popup-visited";
+    const distance = document.createElement("div");
+    distance.className = "popup-distance";
+    distance.textContent = distanceText(p);
+    box.appendChild(distance);
+
+    const label = document.createElement("label");
+    label.className = "popup-visited";
 
     const check = document.createElement("input");
     check.type = "checkbox";
     check.checked = visited.has(i);
-    check.addEventListener("change", () => toggleVisited(i, check.checked));
+    check.addEventListener("change",() => toggleVisited(i,check.checked));
 
-    checkLabel.appendChild(check);
-    checkLabel.appendChild(document.createTextNode(" Mark as Visited"));
-    box.appendChild(checkLabel);
+    label.append(check,document.createTextNode(" Mark as Visited"));
+    box.appendChild(label);
 
     const routeButton = document.createElement("button");
     routeButton.type = "button";
     routeButton.textContent = "Route here";
-    routeButton.style.display = "block";
-    routeButton.style.marginTop = "8px";
-    routeButton.addEventListener("click", () => routeTo(p));
+    routeButton.style.marginTop = "7px";
+    routeButton.addEventListener("click",() => routeTo(p));
     box.appendChild(routeButton);
 
-    marker.bindPopup(box);
+    markers[i].bindPopup(box);
   });
 }
 
-pandals.forEach((p, i) => {
-  const marker = L.marker([p.lat, p.lon]).addTo(map);
+pandals.forEach((p,i) => {
+  const marker = L.marker([p.lat,p.lon]).addTo(map);
 
-  marker.bindTooltip(p.name, {
-    permanent: true,
-    direction: "top",
-    offset: [0, -12],
-    className: "pandal-label"
+  marker.bindTooltip(p.name,{
+    permanent:true,
+    direction:"top",
+    offset:[0,-12],
+    className:"pandal-label"
   });
 
-  marker.on("click", () => marker.openPopup());
+  marker.on("click",() => marker.openPopup());
   markers.push(marker);
 });
 
 function renderList() {
   const query = document.getElementById("search").value.trim().toLowerCase();
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+  const list = pandals.map((p,i) => ({
+    p,
+    i,
+    distance:myCoords ? distanceKm(myCoords,p) : Infinity
+  })).filter(item => item.p.name.toLowerCase().includes(query));
 
-  pandals.forEach((p, i) => {
-    if (!p.name.toLowerCase().includes(query)) return;
+  if (nearbyMode && myCoords) {
+    list.sort((a,b) => a.distance-b.distance);
+    document.getElementById("listHeading").textContent = "📍 Nearby Pandals";
+    document.getElementById("listDescription").textContent =
+      "Closest pandals first · Distance is a straight-line estimate.";
+  } else {
+    document.getElementById("listHeading").textContent = "📍 All Pandals";
+    document.getElementById("listDescription").textContent =
+      myCoords ? "Distance from your current location." :
+      "Start live location to see distances in kilometres.";
+  }
 
+  listEl.innerHTML = "";
+
+  list.forEach(item => {
+    const p = item.p;
+    const i = item.i;
     const row = document.createElement("div");
     row.className = "pandal";
 
@@ -321,8 +360,8 @@ function renderList() {
     check.type = "checkbox";
     check.className = "visited-check";
     check.checked = visited.has(i);
-    check.setAttribute("aria-label", "Mark " + p.name + " as visited");
-    check.addEventListener("change", () => toggleVisited(i, check.checked));
+    check.setAttribute("aria-label","Mark "+p.name+" as visited");
+    check.addEventListener("change",() => toggleVisited(i,check.checked));
 
     const info = document.createElement("div");
     info.className = "pandal-info";
@@ -331,11 +370,15 @@ function renderList() {
     name.className = "pandal-name";
     name.textContent = p.name;
 
-    const label = document.createElement("div");
-    label.className = "visited-label";
-    label.textContent = visited.has(i) ? "✓ Visited" : "Not visited";
+    const distance = document.createElement("div");
+    distance.className = "distance";
+    distance.textContent = distanceText(p);
 
-    info.append(name, label);
+    const status = document.createElement("div");
+    status.className = "visited-label";
+    status.textContent = visited.has(i) ? "✓ Visited" : "Not visited";
+
+    info.append(name,distance,status);
 
     const actions = document.createElement("div");
     actions.className = "pandal-actions";
@@ -343,58 +386,60 @@ function renderList() {
     const showButton = document.createElement("button");
     showButton.className = "secondary";
     showButton.textContent = "Show";
-    showButton.addEventListener("click", () => {
-      map.setView([p.lat, p.lon], 16);
+    showButton.addEventListener("click",() => {
+      map.setView([p.lat,p.lon],16);
       markers[i].openPopup();
     });
 
     const routeButton = document.createElement("button");
     routeButton.textContent = "Route here";
-    routeButton.addEventListener("click", () => routeTo(p));
+    routeButton.addEventListener("click",() => routeTo(p));
 
-    actions.append(showButton, routeButton);
-    row.append(check, info, actions);
-    list.appendChild(row);
+    actions.append(showButton,routeButton);
+    row.append(check,info,actions);
+    listEl.appendChild(row);
   });
 
   updateCounter();
 }
 
-document.getElementById("search").addEventListener("input", renderList);
+document.getElementById("search").addEventListener("input",renderList);
 
 function updateLocation(position) {
   myCoords = {
-    lat: position.coords.latitude,
-    lon: position.coords.longitude
+    lat:position.coords.latitude,
+    lon:position.coords.longitude
   };
 
-  const point = [myCoords.lat, myCoords.lon];
+  const point = [myCoords.lat,myCoords.lon];
 
   if (!myMarker) {
-    myMarker = L.circleMarker(point, {
-      radius: 9,
-      color: "#075db5",
-      fillColor: "#1686ff",
-      fillOpacity: 1,
-      weight: 3
+    myMarker = L.circleMarker(point,{
+      radius:9,
+      color:"#075db5",
+      fillColor:"#1686ff",
+      fillOpacity:1,
+      weight:3
     }).addTo(map).bindPopup("📍 Your live location");
   } else {
     myMarker.setLatLng(point);
   }
 
   if (accuracyCircle) map.removeLayer(accuracyCircle);
-
-  accuracyCircle = L.circle(point, {
-    radius: position.coords.accuracy || 30,
-    color: "#1686ff",
-    fillOpacity: 0.08,
-    weight: 1
+  accuracyCircle = L.circle(point,{
+    radius:position.coords.accuracy || 30,
+    color:"#1686ff",
+    fillOpacity:0.08,
+    weight:1
   }).addTo(map);
 
   startBtn.disabled = true;
   stopBtn.disabled = false;
 
-  showStatus("Live location active · Approx. GPS accuracy: " +
+  renderList();
+  updatePopups();
+
+  showStatus("Live location active · GPS accuracy about " +
     Math.round(position.coords.accuracy) + " m");
 }
 
@@ -404,16 +449,15 @@ function locationError(error) {
   } else if (error.code === 2) {
     showStatus("Location unavailable. Turn on device location and try outdoors.");
   } else {
-    showStatus("Location timed out. Check GPS and internet, then try again.");
+    showStatus("Location timed out. Check GPS and try again.");
   }
 }
 
-startBtn.addEventListener("click", () => {
+startBtn.addEventListener("click",() => {
   if (!navigator.geolocation) {
     showStatus("This browser does not support location.");
     return;
   }
-
   if (watchId !== null) return;
 
   showStatus("Requesting location permission...");
@@ -422,10 +466,7 @@ startBtn.addEventListener("click", () => {
     position => {
       const firstFix = !myCoords;
       updateLocation(position);
-
-      if (firstFix) {
-        map.setView([position.coords.latitude, position.coords.longitude], 15);
-      }
+      if (firstFix) map.setView([myCoords.lat,myCoords.lon],15);
     },
     error => {
       locationError(error);
@@ -436,15 +477,11 @@ startBtn.addEventListener("click", () => {
         stopBtn.disabled = true;
       }
     },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 3000,
-      timeout: 20000
-    }
+    {enableHighAccuracy:true,maximumAge:3000,timeout:20000}
   );
 });
 
-stopBtn.addEventListener("click", () => {
+stopBtn.addEventListener("click",() => {
   if (watchId !== null) navigator.geolocation.clearWatch(watchId);
   watchId = null;
   startBtn.disabled = false;
@@ -452,9 +489,33 @@ stopBtn.addEventListener("click", () => {
   showStatus("Live location stopped.");
 });
 
-async function drawRoute(points, description) {
-  const requestId = ++routeRequestId;
+document.getElementById("showMe").addEventListener("click",() => {
+  if (!myCoords) {
+    showStatus("Start live location first.");
+    return;
+  }
+  map.setView([myCoords.lat,myCoords.lon],16);
+  if (myMarker) myMarker.openPopup();
+});
 
+document.getElementById("nearby").addEventListener("click",() => {
+  if (!myCoords) {
+    showStatus("Start live location first to sort pandals by distance.");
+    return;
+  }
+  nearbyMode = true;
+  renderList();
+  showStatus("Nearby pandals sorted from closest to farthest.");
+});
+
+document.getElementById("all").addEventListener("click",() => {
+  nearbyMode = false;
+  renderList();
+  showStatus("Showing all pandals.");
+});
+
+async function drawRoute(points,description) {
+  const requestId = ++routeRequestId;
   if (routeLayer) {
     map.removeLayer(routeLayer);
     routeLayer = null;
@@ -464,14 +525,12 @@ async function drawRoute(points, description) {
   routeInfo.textContent = "Loading route...";
 
   try {
-    const coordinates = points.map(p => p.lon + "," + p.lat).join(";");
-
+    const coords = points.map(p => p.lon+","+p.lat).join(";");
     const url = "https://router.project-osrm.org/route/v1/driving/" +
-      coordinates + "?overview=full&geometries=geojson";
+      coords + "?overview=full&geometries=geojson";
 
     const response = await fetch(url);
     if (!response.ok) throw new Error("Routing service unavailable");
-
     const data = await response.json();
 
     if (requestId !== routeRequestId) return;
@@ -480,47 +539,40 @@ async function drawRoute(points, description) {
     }
 
     const route = data.routes[0];
-
-    routeLayer = L.geoJSON(route.geometry, {
-      style: { color: "#d62649", weight: 5, opacity: 0.9 }
+    routeLayer = L.geoJSON(route.geometry,{
+      style:{color:"#d62649",weight:5,opacity:0.9}
     }).addTo(map);
 
-    map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+    map.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
 
-    const km = (route.distance / 1000).toFixed(1);
-    const mins = Math.round(route.duration / 60);
+    routeInfo.textContent = description + " · Approx. " +
+      (route.distance/1000).toFixed(1) + " km · Estimated driving time " +
+      Math.round(route.duration/60) +
+      " minutes. Actual road conditions may vary.";
 
-    routeInfo.textContent = description + " · Approx. " + km +
-      " km · Estimated driving time " + mins +
-      " minutes. Actual conditions may vary.";
-
-    showStatus("Route displayed on PujaMap.");
-  } catch (error) {
+    showStatus("Road route displayed on PujaMap.");
+  } catch(error) {
     if (requestId !== routeRequestId) return;
-
-    routeInfo.textContent =
-      "The routing service could not return a route. Please try again.";
-    showStatus("Route could not load. Check internet and try again.");
+    routeInfo.textContent = "The routing service could not return a route. Please try again.";
+    showStatus("Route could not load. Check internet and retry.");
   }
 }
 
 function routeTo(pandal) {
   if (!myCoords) {
-    showStatus("First start live location and allow permission.");
+    showStatus("Start live location first to get a route.");
     return;
   }
-
-  drawRoute([myCoords, pandal], "Route to " + pandal.name);
+  drawRoute([myCoords,pandal],"Route to "+pandal.name);
 }
 
-document.getElementById("tour").addEventListener("click", async () => {
+document.getElementById("tour").addEventListener("click",async () => {
   if (!myCoords) {
-    showStatus("First start live location and allow permission.");
+    showStatus("Start live location first to plan your tour.");
     return;
   }
 
   const requestId = ++routeRequestId;
-
   if (routeLayer) {
     map.removeLayer(routeLayer);
     routeLayer = null;
@@ -530,16 +582,14 @@ document.getElementById("tour").addEventListener("click", async () => {
   routeInfo.textContent = "Finding tour route...";
 
   try {
-    const points = [myCoords, ...pandals];
-    const coordinates = points.map(p => p.lon + "," + p.lat).join(";");
-
+    const points = [myCoords,...pandals];
+    const coords = points.map(p => p.lon+","+p.lat).join(";");
     const url = "https://router.project-osrm.org/trip/v1/driving/" +
-      coordinates +
+      coords +
       "?source=first&destination=last&roundtrip=false&overview=full&geometries=geojson";
 
     const response = await fetch(url);
     if (!response.ok) throw new Error("Tour service unavailable");
-
     const data = await response.json();
 
     if (requestId !== routeRequestId) return;
@@ -548,37 +598,31 @@ document.getElementById("tour").addEventListener("click", async () => {
     }
 
     const trip = data.trips[0];
-
-    routeLayer = L.geoJSON(trip.geometry, {
-      style: { color: "#d62649", weight: 5, opacity: 0.9 }
+    routeLayer = L.geoJSON(trip.geometry,{
+      style:{color:"#d62649",weight:5,opacity:0.9}
     }).addTo(map);
 
-    map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+    map.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
 
-    const km = (trip.distance / 1000).toFixed(1);
-    const mins = Math.round(trip.duration / 60);
-
-    routeInfo.textContent = "Full pandal tour · Approx. " + km +
-      " km · Estimated driving time " + mins +
+    routeInfo.textContent = "Full pandal tour · Approx. " +
+      (trip.distance/1000).toFixed(1) + " km · Estimated driving time " +
+      Math.round(trip.duration/60) +
       " minutes. The service chooses a visiting order for the listed stops.";
 
     showStatus("Full tour route displayed on PujaMap.");
-  } catch (error) {
+  } catch(error) {
     if (requestId !== routeRequestId) return;
-
     routeInfo.textContent =
       "The public routing service could not plan the full tour. Try routing to one pandal at a time.";
     showStatus("Tour route unavailable. Please try again later.");
   }
 });
 
-document.getElementById("clear").addEventListener("click", () => {
+document.getElementById("clear").addEventListener("click",() => {
   routeRequestId++;
-
   if (routeLayer) map.removeLayer(routeLayer);
   routeLayer = null;
-
-  routeInfo.textContent = "Route cleared. Choose a pandal to display a new route.";
+  routeInfo.textContent = "Route cleared. Select a pandal to draw a new route.";
   showStatus("Route cleared.");
 });
 
