@@ -4,630 +4,453 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5b1024">
 <title>PujaMap | Chittaranjan Durga Puja 2026</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 <style>
 :root {
-  --red:#861b32;
-  --dark:#45101d;
-  --gold:#f3c969;
-  --cream:#fff8ed;
-  --ink:#291720;
+  --red:#5b1024;
+  --red2:#811b35;
+  --gold:#e7bd63;
+  --gold2:#f8df9b;
+  --cream:#fff8ec;
+  --ink:#30131c;
+  --muted:#8a6d70;
+  --line:#eedecb;
+  --green:#23734c;
 }
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  font-family:system-ui,Arial,sans-serif;
-  background:var(--cream);
-  color:var(--ink);
+*{box-sizing:border-box}
+body{
+  margin:0;background:#fff8ec;color:var(--ink);
+  font-family:system-ui,-apple-system,Arial,sans-serif
 }
-header {
-  padding:21px 16px;
-  color:white;
-  background:linear-gradient(125deg,var(--dark),#a32440);
-  border-bottom:4px solid var(--gold);
+button,input{font:inherit}
+button{cursor:pointer}
+header{
+  padding:22px 18px 19px;color:white;
+  background:radial-gradient(ellipse at top right,#9e3545 0,#72162e 43%,#400b1b 100%);
+  border-bottom:3px solid var(--gold);
+  position:relative;overflow:hidden
 }
-header h1 { margin:0; font-size:28px; }
-header p { margin:5px 0 0; color:#ffe5aa; }
-main { max-width:1250px; margin:auto; padding:13px; }
-.panel {
-  background:white;
-  border:1px solid #ead9cb;
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:13px;
-  box-shadow:0 4px 16px #42101a0b;
+header:after{
+  content:"✦";position:absolute;right:20px;top:9px;
+  color:var(--gold);font-size:56px;opacity:.22
 }
-h2 { font-size:20px; margin:4px 0 12px; }
-.small { color:#6c5b60; font-size:13px; line-height:1.5; }
-.controls { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
-input[type="text"] {
-  flex:1;
-  min-width:150px;
-  padding:11px;
-  border:1px solid #d5c6c0;
-  border-radius:10px;
-  font:inherit;
+.eyebrow{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold2);font-weight:800
 }
-button {
-  padding:10px 12px;
-  border:0;
-  border-radius:10px;
-  background:var(--red);
-  color:white;
-  font:inherit;
-  font-weight:650;
-  cursor:pointer;
+h1{
+  margin:7px 0 3px;font: bold clamp(27px,6vw,37px) Georgia,serif;
+  letter-spacing:1.8px;color:var(--gold2)
 }
-button.secondary {
-  background:white;
-  color:var(--red);
-  border:1px solid var(--red);
+header p{margin:5px 0 0;font-size:13px;color:#ffe9dc}
+.hero{
+  padding:16px 16px 13px;
+  background:linear-gradient(120deg,#fff8ec,#fff0d9)
 }
-button:disabled { opacity:.5; cursor:not-allowed; }
-.status { color:var(--red); min-height:24px; padding:5px 0; }
-#map {
-  width:100%;
-  height:55vh;
-  min-height:350px;
-  border-radius:12px;
-  border:1px solid #ddd;
-  z-index:1;
+.hero h2{margin:0 0 5px;font: bold 21px Georgia,serif;color:var(--red)}
+.hero p{margin:0;font-size:12px;line-height:1.6;color:#79565a}
+.stats{
+  padding:13px 16px 15px;background:var(--red);color:white
 }
-.stats { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0; }
-.stat {
-  background:#fff2d6;
-  border-radius:10px;
-  padding:10px 13px;
-  font-weight:700;
+.stats-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.stats-label{font-size:10px;letter-spacing:1.4px;color:var(--gold2);font-weight:800}
+.stats strong{font: bold 23px Georgia,serif;color:var(--gold2)}
+.progress{height:7px;border-radius:9px;background:#8e4b5b;margin:9px 0 6px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#d9a83f,#ffe8a0);transition:width .3s}
+#remaining{font-size:11px;color:#f7dce0}
+.map-wrap{padding:10px 10px 0;background:#fff8ec}
+.map-title{display:flex;justify-content:space-between;align-items:center;padding:5px 5px 10px}
+.map-title strong{font: bold 17px Georgia,serif;color:var(--red)}
+.map-title span{font-size:11px;color:var(--muted)}
+#map{
+  width:100%;height:46vh;min-height:320px;max-height:600px;
+  border:1px solid #e6c88a;border-radius:17px;z-index:1;
+  box-shadow:0 5px 18px #5b102414
 }
-.pandal {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
+.controls{padding:14px 14px 8px}
+#search{
+  width:100%;padding:13px 14px;border:1px solid #e5d2b5;
+  border-radius:13px;background:white;outline:none;font-size:14px;
+  box-shadow:0 3px 12px #5b102408
 }
-.pandal-info { flex:1; min-width:0; }
-.pandal-name { font-weight:700; }
-.distance { color:#861b32; font-size:13px; font-weight:750; margin-top:3px; }
-.visited-label { font-size:13px; color:#6c5b60; margin-top:3px; }
-.pandal-actions { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
-.pandal-actions button { padding:8px 10px; font-size:13px; }
-.visited-check { width:20px; height:20px; accent-color:var(--red); flex-shrink:0; }
-.leaflet-tooltip.pandal-label {
-  background:#fff8ed;
-  color:#861b32;
-  border:1px solid #861b32;
-  border-radius:7px;
-  font-weight:750;
-  padding:4px 7px;
-  box-shadow:0 2px 7px #0002;
+#search:focus{border-color:var(--gold)}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.btn{
+  border:1px solid #e4c98e;border-radius:11px;padding:11px 8px;
+  background:#fffdf8;color:var(--red);font-size:12px;font-weight:800
 }
-.leaflet-tooltip.pandal-label:before { display:none; }
-.popup-title { font-weight:750; margin-bottom:7px; }
-.popup-distance { color:#861b32; font-weight:700; margin:5px 0 9px; }
-.popup-visited { display:block; margin:8px 0; }
-@media(min-width:850px) {
-  .layout { display:grid; grid-template-columns:1.3fr 1fr; gap:13px; }
-  #map { height:590px; }
+.btn.primary{background:var(--red);color:var(--gold2);border-color:var(--red)}
+.btn.gold{background:linear-gradient(135deg,#f8e3a8,#dfb34f);color:#49101d;border-color:#d4a544}
+.btn:active{transform:scale(.98)}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:12px 15px 8px}
+.section-head h2{margin:0;font: bold 20px Georgia,serif;color:var(--red)}
+.section-head span{font-size:11px;color:var(--muted)}
+#list{padding:0 13px 24px;display:grid;gap:9px}
+.item{
+  display:flex;align-items:center;gap:11px;padding:12px;
+  background:white;border:1px solid var(--line);border-radius:15px;
+  box-shadow:0 3px 12px #5b102408
+}
+.item.done{background:#fffdf7;border-color:#d9c58d}
+.num{
+  width:39px;height:39px;flex-shrink:0;border-radius:12px;
+  display:grid;place-items:center;background:var(--red);color:var(--gold2);
+  font-weight:900;border:1px solid var(--gold)
+}
+.info{flex:1;min-width:0;cursor:pointer}
+.name{font-size:13px;font-weight:850;color:var(--ink);line-height:1.35}
+.sub{font-size:11px;color:var(--muted);margin-top:4px}
+.distance{font-size:11px;color:var(--red);font-weight:800;margin-top:5px}
+.card-actions{display:flex;flex-direction:column;gap:5px;align-items:stretch}
+.small-btn{
+  padding:7px 8px;border:0;border-radius:8px;font-size:10px;
+  font-weight:850;white-space:nowrap;background:#f8edda;color:var(--red)
+}
+.small-btn.route{background:var(--red);color:var(--gold2)}
+.small-btn.visited{background:#e3f3e8;color:var(--green)}
+.notice{padding:0 16px 17px;font-size:11px;color:var(--muted);line-height:1.6}
+footer{
+  text-align:center;padding:20px 12px;background:#390b19;
+  color:#ffe8cb;font-size:11px;border-top:3px solid var(--gold)
+}
+footer strong{display:block;color:var(--gold2);font: bold 16px Georgia,serif;margin-bottom:5px}
+.pandal-pin{
+  width:34px;height:38px;display:flex;align-items:center;justify-content:center;
+  background:var(--red);color:var(--gold2);font-weight:900;
+  border:2px solid var(--gold);border-radius:50% 50% 50% 5px;
+  transform:rotate(-45deg);box-shadow:0 2px 7px #26071466
+}
+.pandal-pin span{transform:rotate(45deg)}
+.leaflet-tooltip.pandal-label{
+  background:#fff7e7;color:var(--red);border:1px solid var(--gold);
+  border-radius:7px;font-weight:800;font-size:11px;box-shadow:0 2px 8px #30131c22
+}
+.leaflet-popup-content-wrapper{border-radius:12px}
+@media(min-width:760px){
+  header,.hero,.stats,.controls,.section-head,.notice{padding-left:24px;padding-right:24px}
+  .map-wrap{padding-left:24px;padding-right:24px}
+  #map{height:55vh}
+  #list{padding-left:24px;padding-right:24px;grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
-
 <body>
+
 <header>
-  <h1>🪔 PujaMap</h1>
-  <p>Chittaranjan Durga Puja Navigator · 2026</p>
+  <div class="eyebrow">🪔 The Festival Edition · 2026</div>
+  <h1>CHITTARANJAN</h1>
+  <p>Durga Puja Navigator · Discover every pandal</p>
 </header>
 
-<main>
-  <section class="panel">
-    <h2>📍 Live Location & Nearby Pandals</h2>
-    <p class="small">
-      Start live location to calculate your distance from each pandal.
-      Nearby results are sorted by straight-line distance.
-    </p>
+<section class="hero">
+  <h2>Shubho Sharodiya ✨</h2>
+  <p>Explore the festive spirit of Chittaranjan. Find pandals nearby, track your visits and navigate to your next destination.</p>
+</section>
 
-    <div class="controls">
-      <button id="start">▶ Start Live Location</button>
-      <button id="stop" class="secondary" disabled>■ Stop</button>
-      <button id="showMe" class="secondary">◎ My Location</button>
-    </div>
-
-    <div class="controls">
-      <input id="search" type="text" placeholder="Search pandal name...">
-      <button id="nearby">📍 Nearby Pandals</button>
-      <button id="all">Show All</button>
-    </div>
-
-    <div class="controls">
-      <button id="tour">🗺️ All Pandals Route</button>
-      <button id="clear" class="secondary">Clear Route</button>
-    </div>
-
-    <div class="stats">
-      <div class="stat">✅ Visited: <span id="visitedCount">0/11</span></div>
-      <div class="stat">📍 Pandals: 11</div>
-    </div>
-
-    <div id="status" class="status" role="status">
-      Start Live Location and allow location permission to see distances.
-    </div>
-
-    <div id="map"></div>
-    <p class="small">
-      Distances are straight-line estimates from GPS, not road distances.
-      Keep this page open for live updates. Your location is not automatically shared with others.
-    </p>
-  </section>
-
-  <div class="layout">
-    <section class="panel">
-      <h2 id="listHeading">📍 All Pandals</h2>
-      <p class="small" id="listDescription">
-        Select a pandal to see its location, distance and route.
-      </p>
-      <div id="list"></div>
-    </section>
-
-    <section class="panel">
-      <h2>🧭 Route Information</h2>
-      <p id="routeInfo">Start live location and select a pandal to see its road route.</p>
-      <p class="small">
-        Road routes use a public routing service and may occasionally be unavailable.
-        Travel times are estimates.
-      </p>
-    </section>
+<section class="stats">
+  <div class="stats-top">
+    <div class="stats-label">YOUR PUJA JOURNEY</div>
+    <strong><span id="count">0</span><span style="font-size:15px"> / 11</span></strong>
   </div>
-</main>
+  <div class="progress"><span id="bar"></span></div>
+  <div id="remaining">11 pandals left to discover</div>
+</section>
+
+<section class="map-wrap">
+  <div class="map-title">
+    <strong>Explore the Map</strong>
+    <span>📍 11 pandal locations</span>
+  </div>
+  <div id="map" aria-label="Chittaranjan Durga Puja map"></div>
+</section>
+
+<section class="controls">
+  <input id="search" type="search" placeholder="🔎  Search pandal name..." aria-label="Search pandals">
+  <div class="actions">
+    <button class="btn primary" id="locate">⌖ My Location</button>
+    <button class="btn gold" id="nearby">↗ Nearby Pandals</button>
+    <button class="btn" id="showAll">◎ Show All</button>
+    <button class="btn" id="allRoute">➜ All Pandals Route</button>
+    <button class="btn" id="clearRoute" style="grid-column:1/-1">✕ Clear Route</button>
+  </div>
+</section>
+
+<div class="section-head">
+  <h2>Discover Pandals</h2>
+  <span id="resultCount">11 locations</span>
+</div>
+<div id="list"></div>
+<div class="notice">
+  Distances are straight-line estimates from your current location, not road distances.
+  Routes open in Google Maps or use the map route service when available.
+  Allow location permission for nearby sorting and distance estimates.
+</div>
+
+<footer>
+  <strong>✦ PUJAMAP ✦</strong>
+  Made with devotion for Durga Puja 2026 · Chittaranjan
+</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const pandals = [
-  {name:"Area 6",lat:23.8461063,lon:86.9111291},
-  {name:"Area 5",lat:23.8419200,lon:86.8966939},
-  {name:"Hospital Colony",lat:23.8504133,lon:86.8966588},
-  {name:"Area 4 — Ravindra Manch",lat:23.8460140,lon:86.9044070},
-  {name:"Area 2 — Ribbon Area",lat:23.8709240,lon:86.9026420},
-  {name:"Area 7 — Simjhuri",lat:23.8763010,lon:86.9102490},
-  {name:"Area 1 — Fathepur",lat:23.8651730,lon:86.9162690},
-  {name:"DeshBandhu Park",lat:23.8307400,lon:86.8984240},
-  {name:"Area 8",lat:23.8501480,lon:86.8888930},
-  {name:"R. Side",lat:23.8636450,lon:86.8980570},
-  {name:"S.P. North",lat:23.8720550,lon:86.8979010}
+const pujas = [
+  {id:1,name:"Area 6",lat:23.8461063,lon:86.9111291},
+  {id:2,name:"Area 5",lat:23.8419200,lon:86.8966939},
+  {id:3,name:"Hospital Colony",lat:23.8504133,lon:86.8966588},
+  {id:4,name:"Area 4, Ravindra Manch",lat:23.8460140,lon:86.9044070},
+  {id:5,name:"Area 2, Ribbon Area",lat:23.8709240,lon:86.9026420},
+  {id:6,name:"Area 7, Simjhuri",lat:23.8763010,lon:86.9102490},
+  {id:7,name:"Area 1, Fathepur",lat:23.8651730,lon:86.9162690},
+  {id:8,name:"DeshBandhu Park",lat:23.8307400,lon:86.8984240},
+  {id:9,name:"Area 8",lat:23.8501480,lon:86.8888930},
+  {id:10,name:"R. Side",lat:23.8636450,lon:86.8980570},
+  {id:11,name:"S.P. North",lat:23.8720550,lon:86.8979010}
 ];
 
-const STORAGE_KEY = "pujamap_chittaranjan_2026_visited";
-
-function loadVisited() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    return new Set(Array.isArray(data) ? data : []);
-  } catch(e) {
-    return new Set();
-  }
-}
-
-let visited = loadVisited();
-let myCoords = null;
-let watchId = null;
-let myMarker = null;
-let accuracyCircle = null;
-let routeLayer = null;
-let routeRequestId = 0;
-let nearbyMode = false;
-
-const statusEl = document.getElementById("status");
-const routeInfo = document.getElementById("routeInfo");
-const startBtn = document.getElementById("start");
-const stopBtn = document.getElementById("stop");
-const listEl = document.getElementById("list");
-
-function showStatus(message) {
-  statusEl.textContent = message;
-}
-
-const map = L.map("map").setView([23.8565,86.9020],13);
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+const map = L.map("map").setView([23.8565,86.9020],14);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
   maxZoom:19,
-  attribution:"© OpenStreetMap contributors"
+  attribution:"&copy; OpenStreetMap contributors"
 }).addTo(map);
 
-const markers = [];
+const visitedKey = "pujamap_chittaranjan_2026_visited";
+let userLocation = null;
+let userMarker = null;
+let accuracyCircle = null;
+let routeLayer = null;
+const markers = {};
 
-function distanceKm(a,b) {
-  const rad = n => n * Math.PI / 180;
-  const lat1 = rad(a.lat);
-  const lat2 = rad(b.lat);
-  const dLat = rad(b.lat-a.lat);
-  const dLon = rad(b.lon-a.lon);
-  const h = Math.sin(dLat/2)**2 +
-    Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
-  return 6371 * 2 * Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
-}
-
-function distanceText(p) {
-  if (!myCoords) return "Distance: start live location first";
-  const km = distanceKm(myCoords,p);
-  if (km < 1) return "📍 " + Math.round(km*1000) + " m away";
-  return "📍 " + km.toFixed(2) + " km away";
-}
-
-function saveVisited() {
+function getVisited(){
   try {
-    localStorage.setItem(STORAGE_KEY,JSON.stringify([...visited]));
-  } catch(e) {
-    showStatus("Browser storage unavailable; visited marks may not save.");
-  }
+    const value = JSON.parse(localStorage.getItem(visitedKey)||"[]");
+    return Array.isArray(value) ? value : [];
+  } catch(e){ return []; }
 }
 
-function updateCounter() {
-  document.getElementById("visitedCount").textContent =
-    visited.size + "/" + pandals.length;
+function updateStats(){
+  const visited = getVisited();
+  const count = visited.length;
+  document.getElementById("count").textContent = count;
+  document.getElementById("bar").style.width = (count/pujas.length*100)+"%";
+  document.getElementById("remaining").textContent =
+    count===pujas.length ? "🎉 All pandals visited! Shubho Sharodiya!" :
+    (pujas.length-count)+" pandals left to discover";
 }
 
-function toggleVisited(index,checked) {
-  if (checked) visited.add(index);
-  else visited.delete(index);
-  saveVisited();
-  updateCounter();
+function distanceKm(aLat,aLon,bLat,bLon){
+  const rad = n => n*Math.PI/180;
+  const dLat=rad(bLat-aLat), dLon=rad(bLon-aLon);
+  const x=Math.sin(dLat/2)**2+
+    Math.cos(rad(aLat))*Math.cos(rad(bLat))*Math.sin(dLon/2)**2;
+  return 6371*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+function formatDistance(p){
+  if(!userLocation) return "Enable location to see distance";
+  const d=distanceKm(userLocation.lat,userLocation.lon,p.lat,p.lon);
+  return d<1 ? Math.round(d*1000)+" m away" : d.toFixed(2)+" km away";
+}
+
+function selectPuja(p){
+  map.flyTo([p.lat,p.lon],16);
+  if(markers[p.id]) markers[p.id].openPopup();
+}
+
+function directions(p){
+  window.open(
+    "https://www.google.com/maps/dir/?api=1&destination="+p.lat+","+p.lon,
+    "_blank"
+  );
+}
+
+function toggleVisited(id){
+  let visited=getVisited();
+  visited=visited.includes(id) ? visited.filter(x=>x!==id) : [...visited,id];
+  try{localStorage.setItem(visitedKey,JSON.stringify(visited));}catch(e){}
   renderList();
-  updatePopups();
+  updateStats();
 }
 
-function updatePopups() {
-  pandals.forEach((p,i) => {
-    const box = document.createElement("div");
+function renderList(){
+  const query=document.getElementById("search").value.trim().toLowerCase();
+  const list=document.getElementById("list");
+  list.innerHTML="";
 
-    const title = document.createElement("div");
-    title.className = "popup-title";
-    title.textContent = p.name;
-    box.appendChild(title);
+  let visible=pujas.filter(p=>p.name.toLowerCase().includes(query));
+  if(userLocation){
+    visible.sort((a,b)=>
+      distanceKm(userLocation.lat,userLocation.lon,a.lat,a.lon)-
+      distanceKm(userLocation.lat,userLocation.lon,b.lat,b.lon)
+    );
+  }
 
-    const distance = document.createElement("div");
-    distance.className = "popup-distance";
-    distance.textContent = distanceText(p);
-    box.appendChild(distance);
+  document.getElementById("resultCount").textContent=visible.length+" locations";
 
-    const label = document.createElement("label");
-    label.className = "popup-visited";
+  visible.forEach(p=>{
+    const yes=getVisited().includes(p.id);
+    const row=document.createElement("article");
+    row.className="item"+(yes?" done":"");
 
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    check.checked = visited.has(i);
-    check.addEventListener("change",() => toggleVisited(i,check.checked));
+    const num=document.createElement("div");
+    num.className="num";
+    num.textContent=p.id;
 
-    label.append(check,document.createTextNode(" Mark as Visited"));
-    box.appendChild(label);
+    const info=document.createElement("div");
+    info.className="info";
+    const name=document.createElement("div");
+    name.className="name";
+    name.textContent=p.name;
+    const sub=document.createElement("div");
+    sub.className="sub";
+    sub.textContent="Chittaranjan, West Bengal";
+    const distance=document.createElement("div");
+    distance.className="distance";
+    distance.textContent="📍 "+formatDistance(p);
+    info.append(name,sub,distance);
+    info.onclick=()=>selectPuja(p);
 
-    const routeButton = document.createElement("button");
-    routeButton.type = "button";
-    routeButton.textContent = "Route here";
-    routeButton.style.marginTop = "7px";
-    routeButton.addEventListener("click",() => routeTo(p));
-    box.appendChild(routeButton);
+    const actions=document.createElement("div");
+    actions.className="card-actions";
 
-    markers[i].bindPopup(box);
+    const route=document.createElement("button");
+    route.className="small-btn route";
+    route.textContent="➜ Route Here";
+    route.onclick=()=>directions(p);
+
+    const visit=document.createElement("button");
+    visit.className="small-btn"+(yes?" visited":"");
+    visit.textContent=yes?"✓ Visited":"＋ Visited";
+    visit.onclick=()=>toggleVisited(p.id);
+
+    actions.append(route,visit);
+    row.append(num,info,actions);
+    list.appendChild(row);
   });
 }
 
-pandals.forEach((p,i) => {
-  const marker = L.marker([p.lat,p.lon]).addTo(map);
-
-  marker.bindTooltip(p.name,{
-    permanent:true,
-    direction:"top",
-    offset:[0,-12],
-    className:"pandal-label"
+pujas.forEach(p=>{
+  const icon=L.divIcon({
+    className:"",
+    html:'<div class="pandal-pin"><span>'+p.id+'</span></div>',
+    iconSize:[34,38],
+    iconAnchor:[17,36]
   });
 
-  marker.on("click",() => marker.openPopup());
-  markers.push(marker);
+  const marker=L.marker([p.lat,p.lon],{icon}).addTo(map);
+  marker.bindTooltip(p.name,{permanent:true,direction:"top",offset:[0,-28],className:"pandal-label"});
+  marker.bindPopup(
+    '<div style="min-width:150px"><strong style="color:#5b1024">'+p.name+'</strong>'+
+    '<p style="margin:7px 0;color:#8a6d70;font-size:12px">'+formatDistance(p)+'</p>'+
+    '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination='+p.lat+','+p.lon+'\',\'_blank\')" '+
+    'style="background:#5b1024;color:#f8df9b;border:0;padding:9px 12px;border-radius:8px;font-weight:bold">Route Here ↗</button></div>'
+  );
+  markers[p.id]=marker;
 });
 
-function renderList() {
-  const query = document.getElementById("search").value.trim().toLowerCase();
-  const list = pandals.map((p,i) => ({
-    p,
-    i,
-    distance:myCoords ? distanceKm(myCoords,p) : Infinity
-  })).filter(item => item.p.name.toLowerCase().includes(query));
+function updateLocation(lat,lon,accuracy){
+  userLocation={lat,lon};
+  if(userMarker) map.removeLayer(userMarker);
+  if(accuracyCircle) map.removeLayer(accuracyCircle);
 
-  if (nearbyMode && myCoords) {
-    list.sort((a,b) => a.distance-b.distance);
-    document.getElementById("listHeading").textContent = "📍 Nearby Pandals";
-    document.getElementById("listDescription").textContent =
-      "Closest pandals first · Distance is a straight-line estimate.";
-  } else {
-    document.getElementById("listHeading").textContent = "📍 All Pandals";
-    document.getElementById("listDescription").textContent =
-      myCoords ? "Distance from your current location." :
-      "Start live location to see distances in kilometres.";
+  userMarker=L.circleMarker([lat,lon],{
+    radius:9,color:"#fff",weight:3,fillColor:"#277bd2",fillOpacity:1
+  }).addTo(map).bindPopup("📍 Your current location");
+
+  if(accuracy && accuracy<1500){
+    accuracyCircle=L.circle([lat,lon],{
+      radius:accuracy,color:"#277bd2",weight:1,fillOpacity:.06
+    }).addTo(map);
   }
+  renderList();
+  updateMarkerPopups();
+}
 
-  listEl.innerHTML = "";
-
-  list.forEach(item => {
-    const p = item.p;
-    const i = item.i;
-    const row = document.createElement("div");
-    row.className = "pandal";
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    check.className = "visited-check";
-    check.checked = visited.has(i);
-    check.setAttribute("aria-label","Mark "+p.name+" as visited");
-    check.addEventListener("change",() => toggleVisited(i,check.checked));
-
-    const info = document.createElement("div");
-    info.className = "pandal-info";
-
-    const name = document.createElement("div");
-    name.className = "pandal-name";
-    name.textContent = p.name;
-
-    const distance = document.createElement("div");
-    distance.className = "distance";
-    distance.textContent = distanceText(p);
-
-    const status = document.createElement("div");
-    status.className = "visited-label";
-    status.textContent = visited.has(i) ? "✓ Visited" : "Not visited";
-
-    info.append(name,distance,status);
-
-    const actions = document.createElement("div");
-    actions.className = "pandal-actions";
-
-    const showButton = document.createElement("button");
-    showButton.className = "secondary";
-    showButton.textContent = "Show";
-    showButton.addEventListener("click",() => {
-      map.setView([p.lat,p.lon],16);
-      markers[i].openPopup();
-    });
-
-    const routeButton = document.createElement("button");
-    routeButton.textContent = "Route here";
-    routeButton.addEventListener("click",() => routeTo(p));
-
-    actions.append(showButton,routeButton);
-    row.append(check,info,actions);
-    listEl.appendChild(row);
+function updateMarkerPopups(){
+  pujas.forEach(p=>{
+    if(markers[p.id]){
+      markers[p.id].setPopupContent(
+        '<strong style="color:#5b1024">'+p.name+'</strong><br>'+
+        '<span style="font-size:12px">'+formatDistance(p)+'</span><br><br>'+
+        '<button onclick="window.open(\'https://www.google.com/maps/dir/?api=1&destination='+p.lat+','+p.lon+'\',\'_blank\')" '+
+        'style="background:#5b1024;color:#f8df9b;border:0;padding:8px 10px;border-radius:7px;font-weight:bold">Route Here ↗</button>'
+      );
+    }
   });
+}
 
-  updateCounter();
+function requestLocation(zoomToUser){
+  if(!navigator.geolocation){
+    alert("Location is not supported by this browser.");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const c=pos.coords;
+    updateLocation(c.latitude,c.longitude,c.accuracy);
+    if(zoomToUser) map.flyTo([c.latitude,c.longitude],15);
+  },()=>{
+    alert("Location permission nahi mili. Browser settings mein Location allow karo.");
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:10000});
+}
+
+function showAll(){
+  const points=pujas.map(p=>[p.lat,p.lon]);
+  map.fitBounds(L.latLngBounds(points).pad(.12));
+}
+
+function clearRoute(){
+  if(routeLayer){map.removeLayer(routeLayer);routeLayer=null;}
+}
+
+async function drawRoute(points){
+  if(points.length<2) return;
+  clearRoute();
+  const coords=points.map(p=>p.lon+","+p.lat).join(";");
+  const url="https://router.project-osrm.org/route/v1/driving/"+coords+
+    "?overview=full&geometries=geojson";
+  try{
+    const response=await fetch(url);
+    if(!response.ok) throw new Error("Route service unavailable");
+    const data=await response.json();
+    if(data.code!=="Ok" || !data.routes.length) throw new Error("No route");
+    routeLayer=L.geoJSON(data.routes[0].geometry,{
+      style:{color:"#b62242",weight:5,opacity:.85}
+    }).addTo(map);
+    map.fitBounds(routeLayer.getBounds().pad(.12));
+  }catch(e){
+    alert("Map route abhi load nahi hua. Google Maps mein directions khol sakte ho.");
+  }
 }
 
 document.getElementById("search").addEventListener("input",renderList);
+document.getElementById("locate").onclick=()=>requestLocation(true);
 
-function updateLocation(position) {
-  myCoords = {
-    lat:position.coords.latitude,
-    lon:position.coords.longitude
-  };
-
-  const point = [myCoords.lat,myCoords.lon];
-
-  if (!myMarker) {
-    myMarker = L.circleMarker(point,{
-      radius:9,
-      color:"#075db5",
-      fillColor:"#1686ff",
-      fillOpacity:1,
-      weight:3
-    }).addTo(map).bindPopup("📍 Your live location");
-  } else {
-    myMarker.setLatLng(point);
-  }
-
-  if (accuracyCircle) map.removeLayer(accuracyCircle);
-  accuracyCircle = L.circle(point,{
-    radius:position.coords.accuracy || 30,
-    color:"#1686ff",
-    fillOpacity:0.08,
-    weight:1
-  }).addTo(map);
-
-  startBtn.disabled = true;
-  stopBtn.disabled = false;
-
-  renderList();
-  updatePopups();
-
-  showStatus("Live location active · GPS accuracy about " +
-    Math.round(position.coords.accuracy) + " m");
-}
-
-function locationError(error) {
-  if (error.code === 1) {
-    showStatus("Location permission denied. Allow location access in browser settings.");
-  } else if (error.code === 2) {
-    showStatus("Location unavailable. Turn on device location and try outdoors.");
-  } else {
-    showStatus("Location timed out. Check GPS and try again.");
-  }
-}
-
-startBtn.addEventListener("click",() => {
-  if (!navigator.geolocation) {
-    showStatus("This browser does not support location.");
+document.getElementById("nearby").onclick=()=>{
+  if(!userLocation){
+    requestLocation(false);
+    alert("Location allow karo. Phir Nearby Pandals button dobara dabao.");
     return;
   }
-  if (watchId !== null) return;
-
-  showStatus("Requesting location permission...");
-
-  watchId = navigator.geolocation.watchPosition(
-    position => {
-      const firstFix = !myCoords;
-      updateLocation(position);
-      if (firstFix) map.setView([myCoords.lat,myCoords.lon],15);
-    },
-    error => {
-      locationError(error);
-      if (error.code === 1) {
-        if (watchId !== null) navigator.geolocation.clearWatch(watchId);
-        watchId = null;
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-      }
-    },
-    {enableHighAccuracy:true,maximumAge:3000,timeout:20000}
+  renderList();
+  const sorted=[...pujas].sort((a,b)=>
+    distanceKm(userLocation.lat,userLocation.lon,a.lat,a.lon)-
+    distanceKm(userLocation.lat,userLocation.lon,b.lat,b.lon)
   );
-});
+  if(sorted.length) selectPuja(sorted[0]);
+  document.getElementById("list").scrollIntoView({behavior:"smooth",block:"start"});
+};
 
-stopBtn.addEventListener("click",() => {
-  if (watchId !== null) navigator.geolocation.clearWatch(watchId);
-  watchId = null;
-  startBtn.disabled = false;
-  stopBtn.disabled = true;
-  showStatus("Live location stopped.");
-});
+document.getElementById("showAll").onclick=showAll;
+document.getElementById("clearRoute").onclick=clearRoute;
 
-document.getElementById("showMe").addEventListener("click",() => {
-  if (!myCoords) {
-    showStatus("Start live location first.");
-    return;
-  }
-  map.setView([myCoords.lat,myCoords.lon],16);
-  if (myMarker) myMarker.openPopup();
-});
+document.getElementById("allRoute").onclick=()=>{
+  drawRoute(pujas);
+};
 
-document.getElementById("nearby").addEventListener("click",() => {
-  if (!myCoords) {
-    showStatus("Start live location first to sort pandals by distance.");
-    return;
-  }
-  nearbyMode = true;
-  renderList();
-  showStatus("Nearby pandals sorted from closest to farthest.");
-});
-
-document.getElementById("all").addEventListener("click",() => {
-  nearbyMode = false;
-  renderList();
-  showStatus("Showing all pandals.");
-});
-
-async function drawRoute(points,description) {
-  const requestId = ++routeRequestId;
-  if (routeLayer) {
-    map.removeLayer(routeLayer);
-    routeLayer = null;
-  }
-
-  showStatus("Finding road route...");
-  routeInfo.textContent = "Loading route...";
-
-  try {
-    const coords = points.map(p => p.lon+","+p.lat).join(";");
-    const url = "https://router.project-osrm.org/route/v1/driving/" +
-      coords + "?overview=full&geometries=geojson";
-
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Routing service unavailable");
-    const data = await response.json();
-
-    if (requestId !== routeRequestId) return;
-    if (data.code !== "Ok" || !data.routes || !data.routes.length) {
-      throw new Error("No route found");
-    }
-
-    const route = data.routes[0];
-    routeLayer = L.geoJSON(route.geometry,{
-      style:{color:"#d62649",weight:5,opacity:0.9}
-    }).addTo(map);
-
-    map.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
-
-    routeInfo.textContent = description + " · Approx. " +
-      (route.distance/1000).toFixed(1) + " km · Estimated driving time " +
-      Math.round(route.duration/60) +
-      " minutes. Actual road conditions may vary.";
-
-    showStatus("Road route displayed on PujaMap.");
-  } catch(error) {
-    if (requestId !== routeRequestId) return;
-    routeInfo.textContent = "The routing service could not return a route. Please try again.";
-    showStatus("Route could not load. Check internet and retry.");
-  }
-}
-
-function routeTo(pandal) {
-  if (!myCoords) {
-    showStatus("Start live location first to get a route.");
-    return;
-  }
-  drawRoute([myCoords,pandal],"Route to "+pandal.name);
-}
-
-document.getElementById("tour").addEventListener("click",async () => {
-  if (!myCoords) {
-    showStatus("Start live location first to plan your tour.");
-    return;
-  }
-
-  const requestId = ++routeRequestId;
-  if (routeLayer) {
-    map.removeLayer(routeLayer);
-    routeLayer = null;
-  }
-
-  showStatus("Planning your full pandal tour...");
-  routeInfo.textContent = "Finding tour route...";
-
-  try {
-    const points = [myCoords,...pandals];
-    const coords = points.map(p => p.lon+","+p.lat).join(";");
-    const url = "https://router.project-osrm.org/trip/v1/driving/" +
-      coords +
-      "?source=first&destination=last&roundtrip=false&overview=full&geometries=geojson";
-
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Tour service unavailable");
-    const data = await response.json();
-
-    if (requestId !== routeRequestId) return;
-    if (data.code !== "Ok" || !data.trips || !data.trips.length) {
-      throw new Error("No tour found");
-    }
-
-    const trip = data.trips[0];
-    routeLayer = L.geoJSON(trip.geometry,{
-      style:{color:"#d62649",weight:5,opacity:0.9}
-    }).addTo(map);
-
-    map.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
-
-    routeInfo.textContent = "Full pandal tour · Approx. " +
-      (trip.distance/1000).toFixed(1) + " km · Estimated driving time " +
-      Math.round(trip.duration/60) +
-      " minutes. The service chooses a visiting order for the listed stops.";
-
-    showStatus("Full tour route displayed on PujaMap.");
-  } catch(error) {
-    if (requestId !== routeRequestId) return;
-    routeInfo.textContent =
-      "The public routing service could not plan the full tour. Try routing to one pandal at a time.";
-    showStatus("Tour route unavailable. Please try again later.");
-  }
-});
-
-document.getElementById("clear").addEventListener("click",() => {
-  routeRequestId++;
-  if (routeLayer) map.removeLayer(routeLayer);
-  routeLayer = null;
-  routeInfo.textContent = "Route cleared. Select a pandal to draw a new route.";
-  showStatus("Route cleared.");
-});
-
-updatePopups();
 renderList();
+updateStats();
+setTimeout(()=>map.invalidateSize(),250);
 </script>
 </body>
 </html>
