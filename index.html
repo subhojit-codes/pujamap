@@ -676,5 +676,31 @@ renderList();
 updateStats();
 setTimeout(()=>map.invalidateSize(),250);
 </script>
+
+<!-- PujaMap Firebase connection -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_Z6KZB5ZiGPSMTimAr7ji2CSCph5v5Bc",
+    authDomain: "pujamap-6c68d.firebaseapp.com",
+    databaseURL: "https://pujamap-6c68d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "pujamap-6c68d",
+    storageBucket: "pujamap-6c68d.firebasestorage.app",
+    messagingSenderId: "404470739673",
+    appId: "1:404470739673:web:edb4df981e260b2654c4c8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  signInAnonymously(auth)
+    .then(() => console.log("PujaMap Firebase connected"))
+    .catch((error) => console.error("Firebase sign-in error:", error));
+</script>
+
 </body>
 </html>
