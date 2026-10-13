@@ -147,10 +147,20 @@ function removeRouteLayer(){if(routeLayer){map.removeLayer(routeLayer);routeLaye
 // Keep one persistent Canvas renderer for route geometry. Do NOT remove/re-add
 // the route after zoom or rotation: doing so can desynchronise it from the
 // rotated Leaflet panes. Leaflet will project the geographic coordinates itself.
+let routeRefreshTimer = null;
 function refreshRouteRendering(){
-  if (routeCanvasRenderer && typeof routeCanvasRenderer._redraw === "function") {
-    routeCanvasRenderer._redraw();
-  }
+  if (routeRefreshTimer !== null) clearTimeout(routeRefreshTimer);
+  routeRefreshTimer = setTimeout(() => {
+    // Leaflet-Rotate 0.2.x can leave overlay renderers with a stale transform
+    // after zoom. Re-apply the current bearing only after Leaflet completes zoom.
+    try {
+      map.invalidateSize({pan:false});
+      if (typeof map.setBearing === "function") map.setBearing(currentBearing);
+      if (routeLayer && typeof routeLayer.redraw === "function") routeLayer.redraw();
+      if (routeCanvasRenderer && typeof routeCanvasRenderer._update === "function") routeCanvasRenderer._update();
+      if (routeCanvasRenderer && typeof routeCanvasRenderer._redraw === "function") routeCanvasRenderer._redraw();
+    } catch (err) { console.warn("Route renderer refresh failed", err); }
+  }, 80);
 }
 map.on("zoomend moveend rotateend", refreshRouteRendering);
 
