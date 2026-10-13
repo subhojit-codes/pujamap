@@ -66,6 +66,7 @@ body.dark .nav-metric{background:#202d3e}
 body.dark .empty{background:#121b28;border-color:#40516a;color:#a9b6c8}
 #trafficBtn{grid-column:1/-1}
 
+body.dark .dark-map-tiles{filter:invert(1) hue-rotate(180deg) brightness(.78) contrast(.9)}
 </style>
 </head>
 <body>
@@ -86,7 +87,7 @@ body.dark .empty{background:#121b28;border-color:#40516a;color:#a9b6c8}
 const pujas=[{id:1,name:"Area 6",lat:23.8461063,lon:86.9111291},{id:2,name:"Area 5",lat:23.8419200,lon:86.8966939},{id:3,name:"Hospital Colony",lat:23.8504133,lon:86.8966588},{id:4,name:"Area 4, Ravindra Manch",lat:23.8460140,lon:86.9044070},{id:5,name:"Area 2, Ribbon Area",lat:23.8709240,lon:86.9026420},{id:6,name:"Area 7, Simjhuri",lat:23.8763010,lon:86.9102490},{id:7,name:"Area 1, Fathepur",lat:23.8651730,lon:86.9162690},{id:8,name:"DeshBandhu Park",lat:23.8307400,lon:86.8984240},{id:9,name:"Area 8",lat:23.8501480,lon:86.8888930},{id:10,name:"R. Side",lat:23.8636450,lon:86.8980570},{id:11,name:"S.P. North",lat:23.8720550,lon:86.8979010}];
 const map=L.map("map").setView([23.8565,86.9020],14);
 window.pujamapMap=map;
-let currentTiles=L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:20,attribution:"&copy; OpenStreetMap &copy; CARTO"}).addTo(map);
+let currentTiles=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors"}).addTo(map);
 let darkTiles=null;
 const visitedKey="pujamap_chittaranjan_2026_visited";let userLocation=null,userMarker=null,accuracyCircle=null,routeLayer=null,navTarget=null,navWatchId=null,lastRouteUpdate=0,lastRoutePosition=null,routeRequestId=0,hasFittedNavRoute=false;const markers={};
 function getVisited(){try{const v=JSON.parse(localStorage.getItem(visitedKey)||"[]");return Array.isArray(v)?v:[]}catch(e){return[]}}
@@ -121,7 +122,7 @@ document.getElementById("darkModeBtn").onclick=()=>{
  const enabled=document.body.classList.toggle("dark");
  document.getElementById("darkModeBtn").textContent=enabled?"☀️ Light Mode":"🌙 Dark Mode";
  document.querySelector('meta[name="theme-color"]').setAttribute("content",enabled?"#0b1018":"#490c20");
- if(enabled){map.removeLayer(currentTiles);if(!darkTiles)darkTiles=L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap &copy; CARTO"});darkTiles.addTo(map)}
+ if(enabled){currentTiles.getContainer?.();map.removeLayer(currentTiles);if(!darkTiles)darkTiles=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors",className:"dark-map-tiles"});darkTiles.addTo(map)}
  else{if(darkTiles)map.removeLayer(darkTiles);currentTiles.addTo(map)}
  setTimeout(()=>map.invalidateSize(),100);
 };
