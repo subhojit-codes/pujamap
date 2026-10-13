@@ -144,31 +144,15 @@ if(nearestEl)nearestEl.textContent="📍 Nearest pandal: "+nearest.name+" · "+n
 function requestLocation(zoomToUser){if(!navigator.geolocation){alert("Location is not supported by this browser.");return}navigator.geolocation.getCurrentPosition(pos=>{const c=pos.coords;updateLocation(c.latitude,c.longitude,c.accuracy);if(zoomToUser)map.flyTo([c.latitude,c.longitude],15)},()=>alert("Location permission nahi mili. Browser settings mein Location allow karo."),{enableHighAccuracy:true,timeout:15000,maximumAge:10000})}
 function showAll(){map.fitBounds(L.latLngBounds(pujas.map(p=>[p.lat,p.lon])).pad(.12))}
 function removeRouteLayer(){if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}lastRouteGeometry=null}
-// Keep the route's geographic geometry and recreate its Leaflet layer after zoom.
-// This avoids stale SVG path transforms with some Leaflet rotation-plugin versions.
-let routeRedrawTimer = null;
+// Keep one persistent Canvas renderer for route geometry. Do NOT remove/re-add
+// the route after zoom or rotation: doing so can desynchronise it from the
+// rotated Leaflet panes. Leaflet will project the geographic coordinates itself.
 function refreshRouteRendering(){
-  if(routeRedrawTimer !== null) clearTimeout(routeRedrawTimer);
-  routeRedrawTimer = setTimeout(()=>{
-    if(!map || !map.getContainer()) return;
-    if(lastRouteGeometry && routeLayer && map.hasLayer(routeLayer)){
-      const oldRoute=routeLayer;
-      routeLayer=L.geoJSON(lastRouteGeometry,{
-        style:lastRouteStyle,
-        smoothFactor:0,
-        noClip:true,
-        renderer:routeCanvasRenderer
-      });
-      map.removeLayer(oldRoute);
-      routeLayer.addTo(map);
-    } else if(routeLayer && typeof routeLayer.redraw === "function") {
-      routeLayer.redraw();
-    }
-  },180);
+  if (routeCanvasRenderer && typeof routeCanvasRenderer._redraw === "function") {
+    routeCanvasRenderer._redraw();
+  }
 }
-map.on("zoomend", refreshRouteRendering);
-map.on("rotateend", refreshRouteRendering);
-map.on("moveend", refreshRouteRendering);
+map.on("zoomend moveend rotateend", refreshRouteRendering);
 
 function stopNavigation(){navTarget=null;routeRequestId++;if(navWatchId!==null){navigator.geolocation.clearWatch(navWatchId);navWatchId=null}removeRouteLayer();document.getElementById("navPanel").style.display="none";lastRoutePosition=null;lastRouteUpdate=0;hasFittedNavRoute=false}
 function clearRoute(){if(navTarget)stopNavigation();else removeRouteLayer()}
