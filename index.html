@@ -109,7 +109,7 @@ body.dark .dark-map-tiles{filter:invert(1) hue-rotate(180deg) brightness(.78) co
 <script>
 "use strict";
 const pujas=[{id:1,name:"Area 6",lat:23.8461063,lon:86.9111291},{id:2,name:"Area 5",lat:23.8419200,lon:86.8966939},{id:3,name:"Hospital Colony",lat:23.8504133,lon:86.8966588},{id:4,name:"Area 4, Ravindra Manch",lat:23.8460140,lon:86.9044070},{id:5,name:"Area 2, Ribbon Area",lat:23.8709240,lon:86.9026420},{id:6,name:"Area 7, Simjhuri",lat:23.8763010,lon:86.9102490},{id:7,name:"Area 1, Fathepur",lat:23.8651730,lon:86.9162690},{id:8,name:"DeshBandhu Park",lat:23.8307400,lon:86.8984240},{id:9,name:"Area 8",lat:23.8501480,lon:86.8888930},{id:10,name:"R. Side",lat:23.8636450,lon:86.8980570},{id:11,name:"S.P. North",lat:23.8720550,lon:86.8979010}];
-const map=L.map("map",{rotate:true,bearing:0,touchRotate:true,zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false,preferCanvas:false}).setView([23.8565,86.9020],14);
+const map=L.map("map",{rotate:true,bearing:0,touchRotate:true,zoomAnimation:true,fadeAnimation:false,markerZoomAnimation:false,preferCanvas:false}).setView([23.8565,86.9020],14);
 let currentBearing=0;
 const routeSvgRenderer=L.svg({padding:0.5});
 let lastRouteGeometry=null;
