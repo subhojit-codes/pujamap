@@ -80,13 +80,13 @@ body.dark .dark-map-tiles{filter:invert(1) hue-rotate(180deg) brightness(.78) co
 .pandal-pin{
   position:relative!important;width:48px!important;height:48px!important;
   display:flex!important;align-items:center!important;justify-content:center!important;
-  border-radius:50%!important;background:radial-gradient(circle,#fff2c7 0%,#ffb15e 58%,#ff7048 100%)!important;
+  border-radius:50% 50% 50% 8px!important;transform:rotate(-45deg)!important;background:radial-gradient(circle,#fff2c7 0%,#ffb15e 58%,#ff7048 100%)!important;
   border:2px solid #fff!important;color:#fff!important;font-size:27px!important;
   box-shadow:0 3px 12px #10283d66,0 0 0 2px #ff795555!important;
   outline:none!important;overflow:visible!important;transform:none!important;
 }
-.pandal-pin .diya-icon{display:block!important;line-height:1!important;transform:translateY(-1px)!important;filter:drop-shadow(0 1px 1px #7c2d12)}
-.pandal-pin .diya-number{position:absolute!important;right:-4px!important;bottom:-4px!important;min-width:19px!important;height:19px!important;padding:0 4px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:2px solid #fff!important;border-radius:12px!important;background:#10283d!important;color:#fff!important;font:800 10px/1 system-ui,sans-serif!important;box-shadow:0 1px 4px #10283d55!important}
+.pandal-pin .diya-icon{display:block!important;line-height:1!important;transform:rotate(45deg) translateY(-1px)!important;filter:drop-shadow(0 1px 1px #7c2d12)}
+.pandal-pin .diya-number{position:absolute!important;transform:rotate(45deg)!important;right:-4px!important;bottom:-4px!important;min-width:19px!important;height:19px!important;padding:0 4px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:2px solid #fff!important;border-radius:12px!important;background:#10283d!important;color:#fff!important;font:800 10px/1 system-ui,sans-serif!important;box-shadow:0 1px 4px #10283d55!important}
 .pandal-pin.visited-pin{background:radial-gradient(circle,#dcfce7 0%,#4ade80 58%,#15803d 100%)!important;border-color:#dcfce7!important;box-shadow:0 3px 12px #15803d66,0 0 0 2px #22c55e55!important}
 .pandal-pin.visited-pin .diya-number{background:#166534!important;color:#fff!important}
 
