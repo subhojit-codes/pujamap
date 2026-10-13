@@ -1,0 +1,86 @@
+
+const CACHE_NAME = "pujamap-shell-v1";
+const TILE_CACHE = "pujamap-tiles-v1";
+const SHELL = ["./", "./index.html"];
+
+self.addEventListener("install", event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    try {
+      await cache.addAll(SHELL);
+    } catch (e) {}
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter(k => ![CACHE_NAME, TILE_CACHE].includes(k))
+        .map(k => caches.delete(k))
+    );
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", event => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+
+  const url = new URL(req.url);
+
+  // Cache previously viewed OpenStreetMap tiles
+  if (url.hostname.endsWith("tile.openstreetmap.org")) {
+    event.respondWith((async () => {
+      const cache = await caches.open(TILE_CACHE);
+      const cached = await cache.match(req);
+
+      if (cached) return cached;
+
+      try {
+        const response = await fetch(req);
+        if (response && response.ok) {
+          await cache.put(req, response.clone());
+        }
+        return response;
+      } catch (e) {
+        return new Response("", {
+          status: 503,
+          statusText: "Offline tile not cached"
+        });
+      }
+    })());
+    return;
+  }
+
+  // Cache the app shell for offline use
+  if (url.origin === self.location.origin) {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(req);
+
+        if (response && response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(req, response.clone());
+        }
+
+        return response;
+      } catch (e) {
+        const cache = await caches.open(CACHE_NAME);
+        return (
+          await cache.match(req) ||
+          await cache.match("./index.html") ||
+          new Response(
+            "Offline: reconnect to the internet and open PujaMap once.",
+            {
+              status: 503,
+              headers: { "Content-Type": "text/plain" }
+            }
+          )
+        );
+      }
+    })());
+  }
+});
