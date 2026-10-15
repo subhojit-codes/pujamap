@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#490c20">
-<title>PujaMap | Chittaranjan Durga Puja 2026</title>
+<title>PujaMap | Chittaranjan & Durgapur Durga Puja 2026</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <!-- Leaflet Rotate plugin is loaded after Leaflet below -->
 <style>
@@ -183,64 +183,44 @@ window.addEventListener("pagehide",()=>{if(liveWatchId!==null)navigator.geolocat
 (()=>{
  const chBtn=document.getElementById('cityChittaranjan'),duBtn=document.getElementById('cityDurgapur');
  const mapEl=document.getElementById('map'),badge=document.querySelector('.map-badge'),mapTitle=document.querySelector('.map-title strong'),mapCount=document.querySelector('.map-title span'),header=document.querySelector('header h1'),subtitle=document.querySelector('header .subtitle'),sectionTitle=document.querySelector('.section-head h2'),resultCount=document.getElementById('resultCount'),list=document.getElementById('list');
- const originalCenter=[23.8565,86.9020], originalZoom=14;
- let city='chittaranjan',durgaMarker=null;
- const originalRenderList=renderList;
- function openCompleteRoute(){const stops=['Gopalmath High School Durga Puja, Durgapur','Bhiringi Durga Puja, Durgapur','Agrani Durga Puja, Durgapur','Prabhat Sangh Durga Puja, Durgapur','Marconi Durga Puja, Durgapur','Durga Puja pandal Durgapur','Urvasi Durga Puja, Durgapur','Chaturanga Durga Puja, Durgapur','Fuljhore Durga Puja, Durgapur','Vivekananda Park Sankarpur Durgapur','Sector 2C Durga Puja, Durgapur','Santose Sports Club Durgapur'];const url='https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+encodeURIComponent(stops[stops.length-1])+'&waypoints='+stops.slice(0,-1).map(encodeURIComponent).join('%7C')+'&travelmode=driving';window.open(url,'_blank','noopener');}
+ const originalCenter=[23.8565,86.9020],originalZoom=14;let city='chittaranjan';
+ const durgapurVisitedKey='pujamap_durgapur_2026_visited';
+ const durgapurPujas=[
+  {id:1,name:'Gopalmath High School Durga Puja',area:'Gopalmath, Durgapur',query:'Gopalmath High School Durga Puja Ground, Durgapur, West Bengal, India',url:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('Gopalmath High School, Durgapur, West Bengal, India')},
+  {id:2,name:'Bhiringi Nabaroon',area:'Bhiringee More, Benachity',query:'Bhiringi Nabaroon Durga Puja, Benachity, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/5pueVCELuc5W8sEu6'},
+  {id:3,name:'Agrani',area:'Agrani Lane, Benachity',query:'Agrani Durga Puja, Agrani Lane, Benachity, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/k3k41fEXc3GFSAF59'},
+  {id:4,name:'Prabhat Sangha',area:'Benachity',query:'Prabhat Sangha Durga Puja, Benachity, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/Tc91BLfcYtmXGbHKA'},
+  {id:5,name:'Marconi Dakshin Pally',area:'B-Zone, Durgapur',query:'Marconi Dakshin Pally Durga Puja, B-Zone, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/sTAC2bAEghkGaNSL8'},
+  {id:6,name:'Unrated Pandal',area:'Durgapur',query:'Durga Puja pandal, Durgapur, West Bengal, India',url:'https://goo.gl/maps/GduFduECeCahVFG67?entry=yt'},
+  {id:7,name:'Urvashi',area:'City Centre',query:'Urvashi Sarbojonin Durga Puja, City Centre, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/vFChQL9FTN3XVXWo7'},
+  {id:8,name:'Chaturanga',area:'Non-Company Housing Estate, City Centre',query:'Chaturanga Durga Puja, Non Company Housing Estate, City Centre, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/MvdPPVdajSZ27n6n6'},
+  {id:9,name:'Fuljhore Sarbojanin',area:'Fuljhore, Durgapur',query:'Fuljhore Sarbojanin Durga Puja, Fuljhore, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/1yrQmYMjH6Sz6Ekf6'},
+  {id:10,name:'Vivekananda Park / Shankarpur',area:'Shankarpur, Bidhannagar',query:'Vivekananda Park Durga Puja, Shankarpur, Bidhannagar, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/xAjixVVZ5vGpnXe59'},
+  {id:11,name:'Sector 2C Puja Ground',area:'C-51, Bidhannagar',query:'Sector 2C Puja Ground, C-51 Bhimpalashri Sarani, Bidhannagar, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/NT9S15ciUy7RNSpc7'},
+  {id:12,name:'Club Santose',area:'Bidhannagar',query:'Club Santose Durga Puja, Bidhannagar, Durgapur, West Bengal, India',url:'https://maps.app.goo.gl/cmZ6oGyuvrX7sjEt7'}
+ ];
+ const dMarkers={};let geocodeStarted=false;
+ function dVisited(){try{const v=JSON.parse(localStorage.getItem(durgapurVisitedKey)||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
  function setTabs(){chBtn.classList.toggle('active',city==='chittaranjan');duBtn.classList.toggle('active',city==='durgapur')}
- function showChittaranjan(){
-  city='chittaranjan';setTabs();if(durgaMarker){map.removeLayer(durgaMarker);durgaMarker=null}
-  Object.values(markers).forEach(m=>{if(!map.hasLayer(m))m.addTo(map)});
-  header.textContent='CHITTARANJAN';subtitle.textContent='DURGA PUJA NAVIGATOR';badge.textContent='✦ PUJAMAP · CHITTARANJAN';mapTitle.textContent='Explore the Map';mapCount.textContent='📍 11 PANDALS';mapEl.setAttribute('aria-label','Chittaranjan Durga Puja map');sectionTitle.textContent='Discover Pandals';
-  document.querySelector('.stats-label').textContent='YOUR PUJA JOURNEY';document.querySelector('.stats-top strong span[style]').textContent='/ 11';
-  document.querySelectorAll('.controls .btn').forEach(b=>b.disabled=false);document.getElementById('allRoute').textContent='➜ All Pandals Route';document.getElementById('allRoute').onclick=()=>drawRoute(pujas);document.getElementById('locate').onclick=()=>{if(navigator.geolocation)navigator.geolocation.getCurrentPosition(pos=>{userLatLng=[pos.coords.latitude,pos.coords.longitude];map.flyTo(userLatLng,16);updateLocation(userLatLng)},()=>alert('Please allow location access.'))};
-  document.getElementById('search').placeholder='🔎 Search pandal name...';
-  map.flyTo(originalCenter,originalZoom);renderList();updateStats();setTimeout(()=>map.invalidateSize(),150);
+ function dDistance(p){return userLocation?distanceKm(userLocation.lat,userLocation.lon,p.lat,p.lon):null}
+ function updateDStats(){const n=dVisited().length;document.getElementById('count').textContent=n;document.getElementById('bar').style.width=(n/12*100)+'%';document.getElementById('remaining').textContent=n===12?'🎉 All 12 Durgapur pandals visited!':(12-n)+' Durgapur pandals left to discover'}
+ function dIcon(p){const yes=dVisited().includes(p.id);return L.divIcon({className:'',html:`<div class="pandal-pin ${yes?'visited-pin':''}" title="${p.name}">${durgaFaceSvg}</div>`,iconSize:[50,50],iconAnchor:[25,25]})}
+ function dPopup(p){const box=document.createElement('div'),title=document.createElement('strong');title.textContent=p.name;const area=document.createElement('div');area.textContent=p.area;area.style.cssText='font-size:11px;color:#8b7072;margin:4px 0 8px';box.append(title,area);if(p.lat&&p.lon){const b=document.createElement('button');b.textContent='Route Here ↗';b.style.cssText='background:#15374f;color:white;border:0;padding:8px 11px;border-radius:8px;font-weight:bold';b.onclick=()=>startNavigation(p);box.appendChild(b)}else{const b=document.createElement('a');b.textContent='Open verified map link ↗';b.href=p.url;b.target='_blank';b.rel='noopener';box.appendChild(b)}return box}
+ function addDMarker(p){if(!p.lat||!p.lon||dMarkers[p.id])return;const m=L.marker([p.lat,p.lon],{icon:dIcon(p)}).addTo(map);m.bindTooltip(p.name,{permanent:true,direction:'top',offset:[0,-24],className:'pandal-label'});m.bindPopup(dPopup(p));dMarkers[p.id]=m}
+ async function geocodeDurgapur(){if(geocodeStarted)return;geocodeStarted=true;const cacheKey='pujamap_durgapur_geocode_v1';let cache={};try{cache=JSON.parse(localStorage.getItem(cacheKey)||'{}')}catch(e){}
+  for(const p of durgapurPujas){if(city!=='durgapur')return;if(cache[p.id]&&Number.isFinite(cache[p.id].lat)&&Number.isFinite(cache[p.id].lon)){p.lat=cache[p.id].lat;p.lon=cache[p.id].lon;addDMarker(p);continue}
+   // Nominatim lookup is rate-limited to one request per second; unresolved results remain available through the supplied Google Maps link.
+   try{const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=3&q='+encodeURIComponent(p.query);const r=await fetch(url,{headers:{'Accept-Language':'en'}});if(!r.ok)throw Error('geocoder unavailable');const results=await r.json();const hit=results.find(x=>/durgapur|benachity|bidhannagar|city centre|city center|fuljhore|gopalmath|b-zone/i.test((x.display_name||'')+' '+p.query));if(hit){const lat=Number(hit.lat),lon=Number(hit.lon);if(Number.isFinite(lat)&&Number.isFinite(lon)&&lat>23.45&&lat<23.7&&lon>87.15&&lon<87.45){p.lat=lat;p.lon=lon;cache[p.id]={lat,lon,display_name:hit.display_name};try{localStorage.setItem(cacheKey,JSON.stringify(cache))}catch(e){}addDMarker(p)}}
+   }catch(e){console.warn('Could not resolve Durgapur pandal:',p.name,e)}
+   await new Promise(resolve=>setTimeout(resolve,1100));
+  }
+  if(city==='durgapur'){renderDurgapurList();const resolved=durgapurPujas.filter(p=>p.lat&&p.lon);mapCount.textContent='📍 '+resolved.length+' VERIFIED-AREA PINS';document.getElementById('nearestInfo').textContent=resolved.length+' Durgapur locations mapped where geocoding found a matching result. Unresolved pandals still have their original Google Maps links.';if(resolved.length)map.fitBounds(L.latLngBounds(resolved.map(p=>[p.lat,p.lon])).pad(.15));}
  }
- function showDurgapur(){
-  city='durgapur';setTabs();Object.values(markers).forEach(m=>{if(map.hasLayer(m))map.removeLayer(m)});if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}if(durgaMarker){map.removeLayer(durgaMarker);durgaMarker=null}
-  header.textContent='DURGAPUR';subtitle.textContent='DURGA PUJA NAVIGATOR';badge.textContent='✦ PUJAMAP · DURGAPUR';mapTitle.textContent='Explore Durgapur';mapCount.textContent='📍 12 PANDALS ADDED';mapEl.setAttribute('aria-label','Durgapur map');sectionTitle.textContent='Durgapur Pandals';
-  document.querySelector('.stats-label').textContent='DURGAPUR PUJA JOURNEY';document.querySelector('.stats-top strong span[style]').textContent='/ 12';document.getElementById('count').textContent='0';document.getElementById('bar').style.width='0%';document.getElementById('remaining').textContent='12 pandals added · more coming soon';
-  document.querySelectorAll('.controls .btn').forEach(b=>{if(['nearby','showAll','clearRoute'].includes(b.id))b.disabled=true;else b.disabled=false});document.getElementById('allRoute').textContent='➜ Complete 12-Pandal Route';document.getElementById('allRoute').onclick=openCompleteRoute;document.getElementById('locate').onclick=()=>window.open('https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent('Durgapur, West Bengal, India')+'&travelmode=driving','_blank','noopener');document.getElementById('search').placeholder='🔎 Search Durgapur pandals...';
-  map.flyTo([23.55,87.25],12);renderDurgapurList();setTimeout(()=>map.invalidateSize(),150);
- }
- function renderDurgapurList(){
-  const q=document.getElementById('search').value.trim().toLowerCase();list.innerHTML='';
-  const pandals=[
-   {name:'Gopalmath High School Durga Puja',area:'Gopalmath, Durgapur',url:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('Gopalmath High School, Durgapur, West Bengal, India')},
-   {name:'Bhiringi',area:'Durgapur',url:'https://maps.app.goo.gl/5pueVCELuc5W8sEu6'},
-   {name:'Agrani',area:'Durgapur',url:'https://maps.app.goo.gl/k3k41fEXc3GFSAF59'},
-   {name:'Prabhat Sangh',area:'Durgapur',url:'https://maps.app.goo.gl/Tc91BLfcYtmXGbHKA'},
-   {name:'Marconi',area:'Durgapur',url:'https://maps.app.goo.gl/sTAC2bAEghkGaNSL8'},
-   {name:'Unrated Pandal',area:'Durgapur',url:'https://goo.gl/maps/GduFduECeCahVFG67?entry=yt'},
-   {name:'Urvasi',area:'Durgapur',url:'https://maps.app.goo.gl/vFChQL9FTN3XVXWo7'},
-   {name:'Chaturanga',area:'Durgapur',url:'https://maps.app.goo.gl/MvdPPVdajSZ27n6n6'},
-   {name:'Fuljhore',area:'Durgapur',url:'https://maps.app.goo.gl/1yrQmYMjH6Sz6Ekf6'},
-   {name:'Vivekananda Park / Sankarpur',area:'Durgapur',url:'https://maps.app.goo.gl/xAjixVVZ5vGpnXe59'},
-   {name:'Sector 2C',area:'Durgapur',url:'https://maps.app.goo.gl/NT9S15ciUy7RNSpc7'},
-   {name:'Santose Sports Club',area:'Durgapur',url:'https://maps.app.goo.gl/cmZ6oGyuvrX7sjEt7'}
-  ];
-  const matches=pandals.filter(p=>(p.name+' '+p.area).toLowerCase().includes(q));
-  resultCount.textContent=matches.length+' of '+pandals.length+' locations';
-  if(!matches.length){list.innerHTML='<div class="empty">No matching Durgapur pandal found. Try another name.</div>';return}
-  matches.forEach((p,i)=>{
-   const row=document.createElement('article');row.className='item';
-   const num=document.createElement('div');num.className='num';num.textContent=String(pandals.indexOf(p)+1);
-   const info=document.createElement('div');info.className='info';
-   const name=document.createElement('div');name.className='name';name.textContent=p.name;
-   const sub=document.createElement('div');sub.className='sub';sub.textContent=p.area+' · Google Maps link provided';info.append(name,sub);
-   const actions=document.createElement('div');actions.className='card-actions';
-   const find=document.createElement('button');find.className='small-btn';find.textContent='📍 Find Map';find.onclick=()=>window.open(p.url,'_blank','noopener');
-   const dir=document.createElement('button');dir.className='small-btn route';dir.textContent='➜ Directions';dir.onclick=()=>window.open('https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+encodeURIComponent(p.name+', '+p.area+', West Bengal, India')+'&travelmode=driving','_blank','noopener');
-   actions.append(find,dir);row.append(num,info,actions);list.append(row);
-  });
-  const note=document.createElement('div');note.className='city-note';note.textContent='12 Durgapur pandals added. Directions starts from your current location in Google Maps. Use “Complete 12-Pandal Route” above to plan the full circuit. Exact in-app pins/route lines need verified coordinates for each pandal.';list.append(note);
- }
- const previousRender=renderList;
- // Existing search input handler calls the global renderList, so route it to the active city.
- window.renderList=function(){if(city==='durgapur')renderDurgapurList();else previousRender()};
- document.getElementById('search').addEventListener('input',()=>{if(city==='durgapur')renderDurgapurList()});
- chBtn.addEventListener('click',showChittaranjan);duBtn.addEventListener('click',showDurgapur);
+ function openCompleteRoute(){const resolved=durgapurPujas.filter(p=>p.lat&&p.lon);if(resolved.length<2){alert('Abhi exact map points enough nahi mile. Pandal links se locations verify karke dobara try karo.');return}drawRoute(resolved)}
+ function showChittaranjan(){city='chittaranjan';setTabs();Object.values(dMarkers).forEach(m=>{if(map.hasLayer(m))map.removeLayer(m)});Object.values(markers).forEach(m=>{if(!map.hasLayer(m))m.addTo(map)});header.textContent='CHITTARANJAN';subtitle.textContent='DURGA PUJA NAVIGATOR';badge.textContent='✦ PUJAMAP · CHITTARANJAN';mapTitle.textContent='Explore the Map';mapCount.textContent='📍 11 PANDALS';mapEl.setAttribute('aria-label','Chittaranjan Durga Puja map');sectionTitle.textContent='Discover Pandals';document.querySelector('.stats-label').textContent='YOUR PUJA JOURNEY';document.querySelector('.stats-top strong span[style]').textContent='/ 11';document.querySelectorAll('.controls .btn').forEach(b=>b.disabled=false);document.getElementById('allRoute').textContent='➜ All Pandals Route';document.getElementById('allRoute').onclick=()=>drawRoute(pujas);document.getElementById('locate').onclick=()=>requestLocation(true);document.getElementById('nearby').disabled=false;document.getElementById('showAll').disabled=false;document.getElementById('clearRoute').disabled=false;document.getElementById('search').placeholder='🔎 Search pandal name...';map.flyTo(originalCenter,originalZoom);renderList();updateStats();document.getElementById('nearestInfo').textContent='📍 Allow location to find the nearest pandal.';setTimeout(()=>map.invalidateSize(),150)}
+ function showDurgapur(){city='durgapur';setTabs();Object.values(markers).forEach(m=>{if(map.hasLayer(m))map.removeLayer(m)});Object.values(dMarkers).forEach(m=>{if(map.hasLayer(m))map.removeLayer(m)});if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}header.textContent='DURGAPUR';subtitle.textContent='DURGA PUJA NAVIGATOR';badge.textContent='✦ PUJAMAP · DURGAPUR';mapTitle.textContent='Explore Durgapur';mapCount.textContent='📍 12 PANDALS';mapEl.setAttribute('aria-label','Durgapur Durga Puja map');sectionTitle.textContent='Durgapur Pandals';document.querySelector('.stats-label').textContent='DURGAPUR PUJA JOURNEY';document.querySelector('.stats-top strong span[style]').textContent='/ 12';document.querySelectorAll('.controls .btn').forEach(b=>b.disabled=false);document.getElementById('nearby').disabled=false;document.getElementById('showAll').disabled=false;document.getElementById('clearRoute').disabled=false;document.getElementById('allRoute').textContent='➜ All Mapped Pandals Route';document.getElementById('allRoute').onclick=openCompleteRoute;document.getElementById('locate').onclick=()=>requestLocation(true);document.getElementById('search').placeholder='🔎 Search Durgapur pandals...';updateDStats();map.flyTo([23.566,87.31],12);renderDurgapurList();setTimeout(()=>map.invalidateSize(),150);geocodeDurgapur()}
+ function renderDurgapurList(){const q=document.getElementById('search').value.trim().toLowerCase();list.innerHTML='';const matches=durgapurPujas.filter(p=>(p.name+' '+p.area).toLowerCase().includes(q));resultCount.textContent=matches.length+' of 12 locations';if(!matches.length){list.innerHTML='<div class="empty">No matching Durgapur pandal found. Try another name.</div>';return}matches.forEach(p=>{const yes=dVisited().includes(p.id),row=document.createElement('article');row.className='item'+(yes?' done':'');const num=document.createElement('div');num.className='num';num.textContent=p.id;const info=document.createElement('div');info.className='info';const name=document.createElement('div');name.className='name';name.textContent=p.name;const sub=document.createElement('div');sub.className='sub';sub.textContent=p.area+(p.lat&&p.lon?' · map pin available':' · pin lookup pending');const distance=document.createElement('div');distance.className='distance';distance.textContent=p.lat&&p.lon?(dDistance(p)!==null?'📍 '+(dDistance(p)<1?Math.round(dDistance(p)*1000)+' m away':dDistance(p).toFixed(2)+' km away'):'📍 In-app map pin'):'📍 Exact pin not resolved yet';info.append(name,sub,distance);info.onclick=()=>{if(p.lat&&p.lon){map.flyTo([p.lat,p.lon],16);dMarkers[p.id]?.openPopup()}else window.open(p.url,'_blank','noopener')};const actions=document.createElement('div');actions.className='card-actions';const route=document.createElement('button');route.className='small-btn route';route.textContent='➜ Route Here';route.onclick=()=>{if(p.lat&&p.lon)startNavigation(p);else window.open('https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+encodeURIComponent(p.query)+'&travelmode=driving','_blank','noopener')};const find=document.createElement('button');find.className='small-btn';find.textContent='📍 Map Link';find.onclick=()=>window.open(p.url,'_blank','noopener');const visit=document.createElement('button');visit.className='small-btn'+(yes?' visited':'');visit.textContent=yes?'✓ Visited':'＋ Visited';visit.onclick=()=>{let v=dVisited();v=yes?v.filter(x=>x!==p.id):[...v,p.id];try{localStorage.setItem(durgapurVisitedKey,JSON.stringify(v))}catch(e){}renderDurgapurList();updateDStats();durgapurPujas.forEach(x=>{if(dMarkers[x.id]){dMarkers[x.id].setIcon(dIcon(x));dMarkers[x.id].setPopupContent(dPopup(x))}})};actions.append(route,find,visit);row.append(num,info,actions);list.append(row)});const note=document.createElement('div');note.className='city-note';note.textContent='Map pins are added only when the map lookup returns a plausible Durgapur-area result. Geocoding may return a nearby address rather than the exact temporary pandal entrance; use Map Link to double-check. Unresolved entries still open their supplied Google Maps link.';list.append(note)}
+ const previousRender=renderList;window.renderList=function(){if(city==='durgapur')renderDurgapurList();else previousRender()};document.getElementById('search').addEventListener('input',()=>{if(city==='durgapur')renderDurgapurList()});chBtn.addEventListener('click',showChittaranjan);duBtn.addEventListener('click',showDurgapur);
 })();
 </script>
 
